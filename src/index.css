@@ -1,0 +1,15 @@
+/* 1. ย้าย @import ทั้งหมดมาไว้บนสุด */
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;800&display=swap');
+
+/* 2. จากนั้นค่อยตามด้วย Style อื่นๆ */
+body {
+  font-family: 'Kanit', sans-serif;
+}
+
+/* Keyframe สำหรับแถบแสงวิ่งในหลอด Progress Bar */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
