@@ -68,7 +68,8 @@ export default function CloudyFestival() {
 
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [selectedFile, setSelectedFile] = useState(null);
-  // --- เพิ่ม State สำหรับจัดการการส่งฟอร์ม ---
+  
+  // State สำหรับจัดการการส่งฟอร์ม
   const [submitting, setSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -343,7 +344,7 @@ export default function CloudyFestival() {
         </div>
       </section>
 
-      {/* ส่วนที่ 4 : BUY TICKET (ปรับปรุงส่วนชำระเงินใหม่แล้ว) */}
+      {/* ส่วนที่ 4 : BUY TICKET */}
       <section id="buy-ticket" className="min-h-screen bg-slate-950 text-white p-6 py-12">
         <div className="max-w-5xl mx-auto space-y-6">
           <div>
@@ -390,7 +391,7 @@ export default function CloudyFestival() {
               </div>
             </div>
 
-            {/* Step 2: ชำระเงิน (สแกน QR หรือ โอนผ่านเลขบัญชี) */}
+            {/* Step 2: ชำระเงิน */}
             <div className="space-y-4 md:border-l border-slate-800 md:pl-6">
               <h3 className="text-sm font-bold text-gray-200 flex items-center space-x-2">
                 <span className="bg-pink-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">2</span>
@@ -412,44 +413,90 @@ export default function CloudyFestival() {
                 <span>ยืนยันการชำระเงิน</span>
               </h3>
 
-              <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
-                <div className="space-y-2 text-xs">
-                  <input
-                    type="text"
-                    placeholder="ชื่อ-นามสกุล"
-                    required
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
-                  />
-                  <input
-                    type="email"
-                    placeholder="อีเมล (สำหรับรับบัตร)"
-                    required
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="เบอร์โทรศัพท์"
-                    required
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
-                  />
-                </div>
-
-                {/* ปุ่มอัปโหลดรูปภาพสลิป */}
-                <label className="block border-2 border-dashed border-slate-700 hover:border-pink-500 rounded-xl p-3.5 text-center cursor-pointer transition bg-slate-900/50">
-                  <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
-                  <p className="text-xs font-medium text-gray-300">
-                    {selectedFile ? `แนบไฟล์แล้ว: ${selectedFile}` : 'คลิกหรือลากไฟล์สลิปมาที่นี่'}
+              {isSuccess ? (
+                <div className="bg-emerald-950/40 border border-emerald-800 p-5 rounded-xl text-center space-y-3">
+                  <div className="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+                    ✓
+                  </div>
+                  <h4 className="font-bold text-emerald-300 text-base">ชำระเงินสำเร็จแล้ว!</h4>
+                  <p className="text-xs text-gray-300 leading-relaxed">
+                    ระบบได้รับการยืนยันเรียบร้อยแล้ว บัตรเข้างานจะถูกส่งไปยังอีเมลของคุณภายใน 5 นาที
                   </p>
-                  <p className="text-[10px] text-gray-500 mt-0.5">( JPG, PNG ไม่เกิน 5MB )</p>
-                </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSuccess(false);
+                      setSelectedFile(null);
+                    }}
+                    className="text-xs bg-slate-800 hover:bg-slate-700 text-gray-300 px-4 py-2 rounded-lg border border-slate-700 transition mt-2"
+                  >
+                    ทำรายการใหม่
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <div className="space-y-2 text-xs">
+                    <input
+                      type="text"
+                      placeholder="ชื่อ-นามสกุล"
+                      required
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
+                    />
+                    <input
+                      type="email"
+                      placeholder="อีเมล (สำหรับรับบัตร)"
+                      required
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
+                    />
+                    <input
+                      type="tel"
+                      placeholder="เบอร์โทรศัพท์"
+                      required
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
+                    />
+                  </div>
 
-                <button 
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3 rounded-lg text-sm transition shadow-lg shadow-pink-600/20"
-                >
-                  ยืนยันการชำระเงิน
-                </button>
-              </form>
+                  {/* ปุ่มอัปโหลดรูปภาพสลิป */}
+                  <label className="block border-2 border-dashed border-slate-700 hover:border-pink-500 rounded-xl p-3.5 text-center cursor-pointer transition bg-slate-900/50 relative">
+                    <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                    
+                    {selectedFile ? (
+                      <div className="flex items-center justify-between text-xs text-pink-400 font-medium px-1">
+                        <span className="truncate max-w-[180px]">📄 {selectedFile}</span>
+                        <button
+                          type="button"
+                          onClick={handleRemoveFile}
+                          className="text-gray-400 hover:text-white bg-slate-800 px-2 py-0.5 rounded text-[10px]"
+                        >
+                          ยกเลิก
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <p className="text-xs font-medium text-gray-300">
+                          คลิกหรือลากไฟล์สลิปมาที่นี่
+                        </p>
+                        <p className="text-[10px] text-gray-500 mt-0.5">( JPG, PNG ไม่เกิน 5MB )</p>
+                      </>
+                    )}
+                  </label>
+
+                  <button 
+                    type="submit"
+                    disabled={submitting}
+                    className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 disabled:opacity-50 text-white font-bold py-3 rounded-lg text-sm transition shadow-lg shadow-pink-600/20 flex justify-center items-center space-x-2"
+                  >
+                    {submitting ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                        <span>กำลังยืนยัน...</span>
+                      </>
+                    ) : (
+                      <span>ยืนยันการชำระเงิน</span>
+                    )}
+                  </button>
+                </form>
+              )}
             </div>
 
           </div>
