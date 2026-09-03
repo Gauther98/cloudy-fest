@@ -68,6 +68,31 @@ export default function CloudyFestival() {
 
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [selectedFile, setSelectedFile] = useState(null);
+  // --- เพิ่ม State สำหรับจัดการการส่งฟอร์ม ---
+  const [submitting, setSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  // Function สำหรับส่งฟอร์มยืนยัน
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedFile) {
+      alert("กรุณาแนบสลิปการโอนเงินก่อนยืนยันครับ");
+      return;
+    }
+    setSubmitting(true);
+    
+    // จำลองการส่งข้อมูล (ตรงนี้สามารถเปลี่ยนเป็น fetch/axios ส่งไป Backend จริงได้)
+    setTimeout(() => {
+      setSubmitting(false);
+      setIsSuccess(true);
+    }, 1500);
+  };
+
+  // Function สำหรับล้าง/ลบไฟล์สลิป
+  const handleRemoveFile = (e) => {
+    e.stopPropagation();
+    setSelectedFile(null);
+  };
 
   const ticketPrice = 890;
   const totalAmount = ticketQuantity * ticketPrice;
