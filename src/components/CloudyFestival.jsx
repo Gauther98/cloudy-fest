@@ -2,37 +2,60 @@ import React, { useState, useEffect } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import generatePayload from 'promptpay-qr';
 
-// Component สำหรับสร้าง Dynamic PromptPay QR Code
-function PromptPayCard({ phoneNumber, amount }) {
+// Component สำหรับสร้าง Dynamic PromptPay QR Code และข้อมูลโอนเงิน
+function PromptPayCard({ phoneNumber, accountNumber, accountName, amount }) {
+  const [copied, setCopied] = useState(false);
   const qrPayload = generatePayload(phoneNumber, { amount: Number(amount) });
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(accountNumber.replace(/-/g, ''));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col items-center text-center shadow-xl relative overflow-hidden">
-      {/* Badge บอกประเภทการชำระเงิน */}
-      <div className="flex items-center space-x-2 mb-3 bg-blue-950/60 border border-blue-800/50 px-3 py-1 rounded-full">
-        <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-        <span className="text-xs font-semibold text-blue-300 tracking-wide">PROMPTPAY DYNAMIC QR</span>
-      </div>
-
-      {/* กรอบแสดง QR Code */}
-      <div className="bg-white p-4 rounded-xl shadow-inner border border-gray-200 my-2">
-        <QRCodeSVG 
-          value={qrPayload} 
-          size={180} 
-          level="H" 
-          includeMargin={false}
-        />
-      </div>
-
-      {/* แสดง ยอดเงิน และ เบอร์ที่ต้องชำระ */}
-      <div className="mt-3 space-y-1 w-full">
-        <div className="text-xs text-gray-400">ยอดชำระสุทธิ</div>
-        <div className="text-2xl font-black text-emerald-400 tracking-tight">
-          ฿{amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
+    <div className="space-y-3">
+      {/* เลขบัญชีธนาคารสำหรับโอนเงิน */}
+      <div className="bg-slate-900 p-3.5 rounded-xl border border-slate-800 space-y-1">
+        <div className="text-xs text-emerald-400 font-semibold flex items-center justify-between">
+          <span>ธนาคารกสิกรไทย</span>
+          <button 
+            type="button"
+            onClick={handleCopy}
+            className="text-[10px] bg-slate-800 hover:bg-slate-700 text-gray-300 px-2 py-0.5 rounded border border-slate-700 transition"
+          >
+            {copied ? 'คัดลอกแล้ว!' : 'คัดลอกเลขบัญชี'}
+          </button>
         </div>
-        <p className="text-[11px] text-gray-500 pt-1">
-          สแกนผ่านแอปธนาคารใดก็ได้ • ยอดเงินตรงทันที
-        </p>
+        <div className="text-sm font-mono text-white tracking-wide">{accountNumber}</div>
+        <div className="text-[11px] text-gray-400">ชื่อบัญชี: {accountName}</div>
+      </div>
+
+      {/* กรอบ Dynamic PromptPay QR Code */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col items-center text-center shadow-xl relative overflow-hidden">
+        <div className="flex items-center space-x-2 mb-2 bg-blue-950/60 border border-blue-800/50 px-3 py-1 rounded-full">
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+          <span className="text-[11px] font-semibold text-blue-300 tracking-wide">PROMPTPAY DYNAMIC QR</span>
+        </div>
+
+        <div className="bg-white p-3 rounded-xl shadow-inner border border-gray-200 my-1">
+          <QRCodeSVG 
+            value={qrPayload} 
+            size={160} 
+            level="H" 
+            includeMargin={false}
+          />
+        </div>
+
+        <div className="mt-2 space-y-0.5 w-full">
+          <div className="text-[11px] text-gray-400">ยอดชำระสุทธิ</div>
+          <div className="text-xl font-black text-emerald-400 tracking-tight">
+            ฿{amount.toLocaleString('th-TH', { minimumFractionDigits: 2 })}
+          </div>
+          <p className="text-[10px] text-gray-500 pt-0.5">
+            สแกนผ่านแอปธนาคารใดก็ได้ • ยอดเงินตรงทันที
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -44,9 +67,13 @@ export default function CloudyFestival() {
   const [progressWidth, setProgressWidth] = useState(0);
 
   const [ticketQuantity, setTicketQuantity] = useState(1);
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const ticketPrice = 890;
   const totalAmount = ticketQuantity * ticketPrice;
-  const promptPayNumber = "0812345678"; // เปลี่ยนเป็นเบอร์โทรศัพท์ หรือ PromptPay ID ของคุณ
+  const promptPayNumber = "0812345678"; // เปลี่ยนเป็นเบอร์ PromptPay ของคุณ
+  const accountNumber = "123-4-56789-0"; // เลขบัญชีธนาคาร
+  const accountName = "Cloudy Festival";
 
   useEffect(() => {
     const baseTickets = 6000;
@@ -82,6 +109,12 @@ export default function CloudyFestival() {
       clearTimeout(timer);
     };
   }, []);
+
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0].name);
+    }
+  };
 
   return (
     <div className="bg-slate-950 text-white font-sans scroll-smooth">
@@ -285,7 +318,7 @@ export default function CloudyFestival() {
         </div>
       </section>
 
-      {/* ส่วนที่ 4 : BUY TICKET */}
+      {/* ส่วนที่ 4 : BUY TICKET (ปรับปรุงส่วนชำระเงินใหม่แล้ว) */}
       <section id="buy-ticket" className="min-h-screen bg-slate-950 text-white p-6 py-12">
         <div className="max-w-5xl mx-auto space-y-6">
           <div>
@@ -306,6 +339,7 @@ export default function CloudyFestival() {
                 {[1, 2, 3, 4, 5].map((num) => (
                   <button
                     key={num}
+                    type="button"
                     onClick={() => setTicketQuantity(num)}
                     className={`py-2 rounded-lg text-sm font-bold transition border ${
                       ticketQuantity === num
@@ -313,51 +347,47 @@ export default function CloudyFestival() {
                         : 'bg-slate-800/80 border-slate-700 hover:bg-slate-700 text-gray-300'
                     }`}
                   >
-                    {num}
+                    {num} ใบ
                   </button>
                 ))}
               </div>
 
               <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 mt-4">
-                <div className="flex justify-between items-center text-xs text-gray-400">
-                  <span>รายการ</span>
-                  <span>บัตร Cloudy Festival 2026</span>
-                </div>
+                <div className="text-xs font-bold text-pink-400 uppercase tracking-wider">CLOUDY FESTIVAL 2026</div>
                 <div className="flex justify-between items-center text-xs text-gray-400">
                   <span>ราคาต่อใบ</span>
                   <span>฿{ticketPrice.toLocaleString()}</span>
                 </div>
                 <div className="border-t border-slate-800 pt-3 flex justify-between items-center font-bold">
-                  <span className="text-sm">ยอดรวมทั้งสิ้น</span>
-                  <span className="text-lg text-pink-400">฿{totalAmount.toLocaleString()}</span>
+                  <span className="text-sm">รวมทั้งหมด</span>
+                  <span className="text-xl text-pink-500">฿{totalAmount.toLocaleString()}</span>
                 </div>
               </div>
             </div>
 
-            {/* Step 2: สแกนชำระเงิน (QR Code แบบ Dynamic) */}
+            {/* Step 2: ชำระเงิน (สแกน QR หรือ โอนผ่านเลขบัญชี) */}
             <div className="space-y-4 md:border-l border-slate-800 md:pl-6">
               <h3 className="text-sm font-bold text-gray-200 flex items-center space-x-2">
                 <span className="bg-pink-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">2</span>
-                <span>สแกนจ่ายเงิน</span>
+                <span>ชำระเงิน</span>
               </h3>
 
-              {/* แสดง QR Code พร้อมยอดเงินอัตโนมัติ */}
-              <PromptPayCard phoneNumber={promptPayNumber} amount={totalAmount} />
+              <PromptPayCard 
+                phoneNumber={promptPayNumber} 
+                accountNumber={accountNumber}
+                accountName={accountName}
+                amount={totalAmount} 
+              />
             </div>
 
-            {/* Step 3: แนบสลิปและข้อมูล */}
+            {/* Step 3: กรอกข้อมูลและยืนยันการชำระเงิน */}
             <div className="space-y-4 md:border-l border-slate-800 md:pl-6">
               <h3 className="text-sm font-bold text-gray-200 flex items-center space-x-2">
                 <span className="bg-pink-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">3</span>
-                <span>แจ้งชำระเงิน</span>
+                <span>ยืนยันการชำระเงิน</span>
               </h3>
 
               <form onSubmit={(e) => e.preventDefault()} className="space-y-3">
-                <div className="border-2 border-dashed border-slate-700 hover:border-pink-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-900/50">
-                  <p className="text-xs font-medium text-gray-300">แนบรูปภาพสลิปโอนเงิน</p>
-                  <p className="text-[10px] text-gray-500 mt-0.5">รองรับ JPG, PNG</p>
-                </div>
-
                 <div className="space-y-2 text-xs">
                   <input
                     type="text"
@@ -379,6 +409,15 @@ export default function CloudyFestival() {
                   />
                 </div>
 
+                {/* ปุ่มอัปโหลดรูปภาพสลิป */}
+                <label className="block border-2 border-dashed border-slate-700 hover:border-pink-500 rounded-xl p-3.5 text-center cursor-pointer transition bg-slate-900/50">
+                  <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                  <p className="text-xs font-medium text-gray-300">
+                    {selectedFile ? `แนบไฟล์แล้ว: ${selectedFile}` : 'คลิกหรือลากไฟล์สลิปมาที่นี่'}
+                  </p>
+                  <p className="text-[10px] text-gray-500 mt-0.5">( JPG, PNG ไม่เกิน 5MB )</p>
+                </label>
+
                 <button 
                   type="submit"
                   className="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3 rounded-lg text-sm transition shadow-lg shadow-pink-600/20"
@@ -389,6 +428,13 @@ export default function CloudyFestival() {
             </div>
 
           </div>
+
+          {/* Note แจ้งเตือนส่งอีเมล */}
+          <div className="bg-slate-900/80 border border-slate-800 p-3.5 rounded-xl text-xs text-gray-300 flex items-center space-x-2">
+            <span className="text-emerald-400 font-bold">✓</span>
+            <span>เมื่อยืนยันการชำระเงินสำเร็จ ระบบจะส่งอีเมลคอนเฟิร์มไปยังอีเมลของคุณทันที หากไม่พบอีเมล กรุณาตรวจสอบในกล่องจดหมายขยะ (Junk/Spam)</span>
+          </div>
+
         </div>
       </section>
     </div>
