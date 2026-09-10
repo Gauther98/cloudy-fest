@@ -70,7 +70,10 @@ export default function CloudyFestival() {
   // Countdown State
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
+  // Ticket Selection State
+  const [selectedTicketType, setSelectedTicketType] = useState('regular'); // 'regular' | 'vip'
   const [ticketQuantity, setTicketQuantity] = useState(1);
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState('');
   
@@ -84,8 +87,29 @@ export default function CloudyFestival() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [heroPhoto, setHeroPhoto] = useState(null);
 
-  const ticketPrice = 890;
-  const totalAmount = ticketQuantity * ticketPrice;
+  // Ticket Data Configurations
+  const ticketTypes = {
+    regular: {
+      id: 'regular',
+      tag: 'GENERAL ADMISSION',
+      title: 'ธรรมดา',
+      desc: 'สิทธิ์เข้างาน 1 คน • เข้าถึงทั้ง 3 เวทีและทุกกิจกรรม',
+      price: 1100,
+      unitLabel: 'บาท / คน'
+    },
+    vip: {
+      id: 'vip',
+      tag: 'VIP CAMPER • 4 PEOPLE',
+      title: 'VIP รถบ้าน',
+      desc: 'บัตร 4 คน • รถบ้านส่วนตัว • ช่องเข้างานพิเศษ • พื้นที่รับรอง และสิทธิ์พิเศษเฉพาะ VIP',
+      price: 30000,
+      unitLabel: 'บาท / 4 คน'
+    }
+  };
+
+  const currentTicket = ticketTypes[selectedTicketType];
+  const totalAmount = ticketQuantity * currentTicket.price;
+
   const promptPayNumber = "0812345678";
   const accountNumber = "123-4-56789-0";
   const accountName = "Cloudy Festival";
@@ -391,10 +415,7 @@ export default function CloudyFestival() {
             <p className="text-xs text-gray-400 max-w-xs">3 เวทีการแสดง อัดแน่นด้วยศิลปินมากกว่า 20 วง ตลอดวันและคืน</p>
           </div>
 
-          {/* HEADLINER CARDS (ปรับปรุงใหม่ตามตัวอย่าง) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            {/* Headliner 1 */}
             <div className="relative group bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-pink-500/50 transition duration-300">
               <div className="h-80 w-full relative overflow-hidden">
                 <img
@@ -416,7 +437,6 @@ export default function CloudyFestival() {
               </div>
             </div>
 
-            {/* Headliner 2 */}
             <div className="relative group bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-purple-500/50 transition duration-300">
               <div className="h-80 w-full relative overflow-hidden">
                 <img
@@ -438,7 +458,6 @@ export default function CloudyFestival() {
               </div>
             </div>
 
-            {/* Headliner 3 */}
             <div className="relative group bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-lime-500/50 transition duration-300">
               <div className="h-80 w-full relative overflow-hidden">
                 <img
@@ -459,7 +478,6 @@ export default function CloudyFestival() {
                 </p>
               </div>
             </div>
-
           </div>
 
           <div className="text-center pt-4">
@@ -474,54 +492,109 @@ export default function CloudyFestival() {
         </div>
       </section>
 
-      {/* SECTION 4: BUY TICKET (เพิ่มรายละเอียดบัตรเข้างาน) */}
+      {/* SECTION 4: BUY TICKET */}
       <section id="buy-ticket" className="min-h-screen bg-slate-950 text-white p-6 py-12">
         <div className="max-w-5xl mx-auto space-y-6">
           <div>
             <span className="bg-pink-600 text-white text-xs font-bold px-3 py-1 rounded-sm">04 BUY TICKET</span>
-            <p className="text-xs text-gray-400 mt-1">ซื้อง่ายๆ รับบัตรทันทีผ่านระบบอัตโนมัติ</p>
+            <p className="text-xs text-gray-400 mt-1">เลือกประเภทบัตรและซื้อง่ายๆ ผ่านระบบอัตโนมัติ</p>
           </div>
 
-          {/* รายละเอียดบัตรเข้างาน (เพิ่มใหม่ตามคำขอ) */}
-          <div className="bg-gradient-to-r from-purple-900/40 via-slate-900 to-slate-900 p-6 rounded-2xl border border-purple-800/50 space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-800 pb-3">
-              <div>
-                <span className="bg-pink-500/20 text-pink-400 text-[10px] font-bold px-2 py-0.5 rounded border border-pink-500/30 uppercase">
-                  REGULAR PASS
-                </span>
-                <h3 className="text-xl font-bold text-white mt-1">บัตรเข้าชมงาน Back to Childhood (1 วันเต็ม)</h3>
+          {/* Ticket Type Cards Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            {/* Card 1: General Admission */}
+            <div 
+              onClick={() => setSelectedTicketType('regular')}
+              className={`relative bg-[#160c29] p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-8 ${
+                selectedTicketType === 'regular'
+                  ? 'border-purple-500 ring-2 ring-purple-500/50 bg-[#1e1039]'
+                  : 'border-purple-900/40 hover:border-purple-600/60'
+              }`}
+            >
+              <div className="space-y-4">
+                <div className="text-[10px] tracking-widest text-purple-300/80 font-bold uppercase">
+                  {ticketTypes.regular.tag}
+                </div>
+                <h3 className="text-3xl font-black text-white">{ticketTypes.regular.title}</h3>
+                <p className="text-xs text-purple-200/70 leading-relaxed">{ticketTypes.regular.desc}</p>
               </div>
-              <div className="text-2xl font-black text-pink-400">฿890 <span className="text-xs text-gray-400 font-normal">/ ใบ</span></div>
+
+              <div className="space-y-6">
+                <div className="flex items-baseline space-x-2">
+                  <span className="text-4xl font-black text-white font-sans">
+                    {ticketTypes.regular.price.toLocaleString()}
+                  </span>
+                  <span className="text-xs text-purple-200/70">{ticketTypes.regular.unitLabel}</span>
+                </div>
+
+                <button
+                  type="button"
+                  className={`w-full py-3 rounded-lg text-xs font-bold transition border ${
+                    selectedTicketType === 'regular'
+                      ? 'bg-purple-600 border-purple-500 text-white'
+                      : 'bg-transparent border-purple-800/60 text-purple-300 hover:bg-purple-900/40'
+                  }`}
+                >
+                  {selectedTicketType === 'regular' ? 'เลือกบัตรนี้แล้ว' : 'เลือกบัตรนี้'}
+                </button>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs text-gray-300">
-              <div className="flex items-center space-x-2 bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span>เข้าได้ทุกเวที (3 Stages)</span>
+            {/* Card 2: VIP Camper */}
+            <div 
+              onClick={() => setSelectedTicketType('vip')}
+              className={`relative bg-[#1a0c33] p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-8 ${
+                selectedTicketType === 'vip'
+                  ? 'border-purple-500 ring-2 ring-purple-500/50 bg-[#220d47]'
+                  : 'border-purple-900/40 hover:border-purple-600/60'
+              }`}
+            >
+              {selectedTicketType === 'vip' && (
+                <div className="absolute top-4 right-4 bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">
+                  ✓
+                </div>
+              )}
+
+              <div className="space-y-4">
+                <div className="text-[10px] tracking-widest text-purple-300/80 font-bold uppercase">
+                  {ticketTypes.vip.tag}
+                </div>
+                <h3 className="text-3xl font-black text-white">{ticketTypes.vip.title}</h3>
+                <p className="text-xs text-purple-200/70 leading-relaxed">{ticketTypes.vip.desc}</p>
               </div>
-              <div className="flex items-center space-x-2 bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span>ฟรี เครื่องดื่ม 1 แก้ว</span>
-              </div>
-              <div className="flex items-center space-x-2 bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span>โซน Playground & Mud</span>
-              </div>
-              <div className="flex items-center space-x-2 bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
-                <span className="text-emerald-400 font-bold">✓</span>
-                <span>ริสต์แบนด์ที่ระลึกหน้างาน</span>
+
+              <div className="space-y-6">
+                <div className="flex items-baseline space-x-2">
+                  <span className="text-4xl font-black text-white font-sans">
+                    {ticketTypes.vip.price.toLocaleString()}
+                  </span>
+                  <span className="text-xs text-purple-200/70">{ticketTypes.vip.unitLabel}</span>
+                </div>
+
+                <button
+                  type="button"
+                  className={`w-full py-3 rounded-lg text-xs font-bold transition border ${
+                    selectedTicketType === 'vip'
+                      ? 'bg-purple-600 border-purple-500 text-white shadow-lg shadow-purple-600/30'
+                      : 'bg-transparent border-purple-800/60 text-purple-300 hover:bg-purple-900/40'
+                  }`}
+                >
+                  {selectedTicketType === 'vip' ? 'เลือกบัตรนี้แล้ว' : 'เลือกบัตรนี้'}
+                </button>
               </div>
             </div>
+
           </div>
 
-          {/* ขั้นตอนซื้อบัตรและโอนเงิน */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-900/50 backdrop-blur-md p-6 rounded-2xl border border-slate-800">
+          {/* ขั้นตอนการสั่งซื้อและชำระเงิน */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-900/50 backdrop-blur-md p-6 rounded-2xl border border-slate-800 mt-6">
             
             {/* Step 1: จำนวนบัตร */}
             <div className="space-y-4">
               <h3 className="text-sm font-bold text-gray-200 flex items-center space-x-2">
                 <span className="bg-pink-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">1</span>
-                <span>เลือกจำนวนบัตร</span>
+                <span>เลือกจำนวนชุดบัตร</span>
               </h3>
               
               <div className="grid grid-cols-5 gap-2">
@@ -536,16 +609,24 @@ export default function CloudyFestival() {
                         : 'bg-slate-800/80 border-slate-700 hover:bg-slate-700 text-gray-300'
                     }`}
                   >
-                    {num} ใบ
+                    {num} {selectedTicketType === 'vip' ? 'คัน' : 'ใบ'}
                   </button>
                 ))}
               </div>
 
               <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 mt-4">
                 <div className="text-xs font-bold text-pink-400 uppercase tracking-wider">SUMMARY</div>
+                <div className="flex justify-between items-center text-xs text-gray-300">
+                  <span>บัตรประเภท</span>
+                  <span className="font-bold text-white">{currentTicket.title}</span>
+                </div>
                 <div className="flex justify-between items-center text-xs text-gray-400">
-                  <span>ราคาต่อใบ</span>
-                  <span>฿{ticketPrice.toLocaleString()}</span>
+                  <span>ราคาต่อชุด</span>
+                  <span>฿{currentTicket.price.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center text-xs text-gray-400">
+                  <span>จำนวน</span>
+                  <span>{ticketQuantity} {selectedTicketType === 'vip' ? 'ชุด' : 'ใบ'}</span>
                 </div>
                 <div className="border-t border-slate-800 pt-3 flex justify-between items-center font-bold">
                   <span className="text-sm">รวมทั้งหมด</span>
@@ -569,7 +650,7 @@ export default function CloudyFestival() {
               />
             </div>
 
-            {/* Step 3: กรอกข้อมูลและยืนยันการชำระเงิน */}
+            {/* Step 3: ยืนยันการชำระเงิน */}
             <div className="space-y-4 md:border-l border-slate-800 md:pl-6">
               <h3 className="text-sm font-bold text-gray-200 flex items-center space-x-2">
                 <span className="bg-pink-600 text-white w-5 h-5 rounded-full inline-flex items-center justify-center text-xs">3</span>
