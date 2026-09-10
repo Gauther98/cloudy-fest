@@ -446,15 +446,17 @@ export default function CloudyFestival() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Card 1 */}
             <div className="relative group bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-pink-500/50 transition duration-300">
               <div className="h-80 w-full relative overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80"
                   alt="Headliner 1"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
-                <span className="absolute top-3 left-3 bg-pink-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded uppercase tracking-widest">
+                <span className="absolute top-3 left-3 bg-pink-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded uppercase tracking-widest shadow-md">
                   MAIN STAGE • HEADLINER
                 </span>
               </div>
@@ -467,15 +469,16 @@ export default function CloudyFestival() {
               </div>
             </div>
 
+            {/* Card 2 */}
             <div className="relative group bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-purple-500/50 transition duration-300">
               <div className="h-80 w-full relative overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80"
                   alt="Headliner 2"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
-                <span className="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded uppercase tracking-widest">
+                <span className="absolute top-3 left-3 bg-purple-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded uppercase tracking-widest shadow-md">
                   MUD STAGE • HEADLINER
                 </span>
               </div>
@@ -488,15 +491,16 @@ export default function CloudyFestival() {
               </div>
             </div>
 
+            {/* Card 3 */}
             <div className="relative group bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 hover:border-lime-500/50 transition duration-300">
               <div className="h-80 w-full relative overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80"
                   alt="Headliner 3"
-                  className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
-                <span className="absolute top-3 left-3 bg-lime-400 text-black text-[10px] font-extrabold px-2.5 py-1 rounded uppercase tracking-widest">
+                <span className="absolute top-3 left-3 bg-lime-400 text-black text-[10px] font-extrabold px-2.5 py-1 rounded uppercase tracking-widest shadow-md">
                   PLAYGROUND STAGE
                 </span>
               </div>
@@ -508,12 +512,13 @@ export default function CloudyFestival() {
                 </p>
               </div>
             </div>
+
           </div>
 
           <div className="text-center pt-4">
             <a
               href="#buy-ticket"
-              className="bg-pink-600 hover:bg-pink-500 text-white px-8 py-3 rounded-lg font-bold text-sm inline-flex items-center space-x-2 transition"
+              className="bg-pink-600 hover:bg-pink-500 text-white px-8 py-3 rounded-lg font-bold text-sm inline-flex items-center space-x-2 transition shadow-lg shadow-pink-600/30"
             >
               <span>NEXT : BUY TICKET</span>
               <span>→</span>
@@ -815,6 +820,15 @@ export default function CloudyFestival() {
 
         </div>
       </section>
+      {/* FOOTER */}
+      <footer className="bg-[#07030e] border-t border-purple-950/60 py-10 px-6 text-center space-y-3">
+        <div className="text-sm font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 uppercase">
+          BACK TO CHILDHOOD FESTIVAL 2026
+        </div>
+        <div className="text-[11px] font-mono tracking-wider text-gray-500 uppercase">
+          © 2026 BACK TO CHILDHOOD FESTIVAL. ALL RIGHTS RESERVED.
+        </div>
+      </footer>
     </div>
   );
 }
