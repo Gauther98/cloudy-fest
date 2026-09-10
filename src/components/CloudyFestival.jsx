@@ -68,10 +68,26 @@ export default function CloudyFestival() {
 
   const [ticketQuantity, setTicketQuantity] = useState(1);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [fileName, setFileName] = useState('');
   
+  // State สำหรับเก็บข้อมูลการจอง
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: ''
+  });
+
   // State สำหรับจัดการการส่งฟอร์ม
   const [submitting, setSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  // State เพิ่มเติมสำหรับ Hero Interactive Feature
+  const [heroPhoto, setHeroPhoto] = useState(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   // Function สำหรับส่งฟอร์มยืนยัน
   const handleSubmit = (e) => {
@@ -82,7 +98,7 @@ export default function CloudyFestival() {
     }
     setSubmitting(true);
     
-    // จำลองการส่งข้อมูล (ตรงนี้สามารถเปลี่ยนเป็น fetch/axios ส่งไป Backend จริงได้)
+    // จำลองการส่งข้อมูลไปยัง Server / API
     setTimeout(() => {
       setSubmitting(false);
       setIsSuccess(true);
@@ -93,18 +109,17 @@ export default function CloudyFestival() {
   const handleRemoveFile = (e) => {
     e.stopPropagation();
     setSelectedFile(null);
+    setFileName('');
   };
 
   const ticketPrice = 890;
   const totalAmount = ticketQuantity * ticketPrice;
-  const promptPayNumber = "0812345678"; // เปลี่ยนเป็นเบอร์ PromptPay ของคุณ
-  const accountNumber = "123-4-56789-0"; // เลขบัญชีธนาคาร
+  const promptPayNumber = "0812345678";
+  const accountNumber = "123-4-56789-0";
   const accountName = "Cloudy Festival";
 
   useEffect(() => {
-    const baseTickets = 6000;
-    const randomBonus = Math.floor(Math.random() * 151) + 100;
-    const targetTickets = baseTickets + randomBonus;
+    const targetTickets = 6842;
 
     const duration = 2000;
     const frameRate = 1000 / 60;
@@ -136,74 +151,202 @@ export default function CloudyFestival() {
     };
   }, []);
 
+  // Clean up Object URL เมื่อ unmount หรือเมื่อเลิกใช้
+  useEffect(() => {
+    return () => {
+      if (heroPhoto) {
+        URL.revokeObjectURL(heroPhoto);
+      }
+    };
+  }, [heroPhoto]);
+
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0].name);
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setFileName(file.name);
+    }
+  };
+
+  const handleHeroPhotoUpload = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      if (heroPhoto) {
+        URL.revokeObjectURL(heroPhoto);
+      }
+      setHeroPhoto(URL.createObjectURL(e.target.files[0]));
+    }
+  };
+
+  const clearHeroPhoto = () => {
+    if (heroPhoto) {
+      URL.revokeObjectURL(heroPhoto);
+      setHeroPhoto(null);
     }
   };
 
   return (
-    <div className="bg-slate-950 text-white font-sans scroll-smooth">
-      {/* ส่วนที่ 1 : LIVE TRACKING */}
+    <div className="bg-[#0a0512] text-white font-['Kanit',sans-serif] scroll-smooth selection:bg-purple-500 selection:text-white">
+      
+      {/* Font Kanit & Marquee Keyframes Animation */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800;900&display=swap');
+        
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        
+        .animate-marquee {
+          display: inline-block;
+          white-space: nowrap;
+          animation: marquee 20s linear infinite;
+        }
+      `}</style>
+
+      {/* 1. Top Ticker Banner */}
+      <div className="w-full bg-purple-600 text-white text-[11px] font-bold py-1.5 px-4 tracking-widest uppercase overflow-hidden whitespace-nowrap shadow-lg border-b border-purple-500/30">
+        <div className="animate-marquee inline-block space-x-8">
+          <span>LIVE MUSIC ✦ PLAYGROUND ✦ MUD ZONE ✦ KHAO YAI ✦ THREE STAGES ✦ LIVE MUSIC ✦ PLAYGROUND ✦ MUD ZONE ✦ KHAO YAI ✦ THREE STAGES</span>
+        </div>
+      </div>
+
+      {/* ========================================================= */}
+      {/* ส่วนที่ 1 : BACK TO CHILDHOOD HERO SECTION */}
+      {/* ========================================================= */}
       <section
         id="home"
-        className="min-h-screen text-white p-6 pt-28 relative bg-cover bg-center flex flex-col justify-center"
+        className="min-h-screen relative flex flex-col justify-between pt-8 pb-16 px-4 sm:px-8 bg-cover bg-center"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('https://media-cldnry.s-nbcnews.com/image/upload/t_fit-560w,f_auto,q_auto:best/rockcms/2024-06/240602-concert-fans-stock-vl-1023a-9b4766.jpg')`,
+          backgroundImage: `linear-gradient(to bottom, rgba(10, 5, 18, 0.75), rgba(10, 5, 18, 0.95)), url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1920&q=80')`,
         }}
       >
-        <div className="max-w-4xl mx-auto text-center space-y-6">
-          <span className="bg-blue-600/80 text-white text-xs px-3 py-1 rounded-sm uppercase tracking-wider">
-            01 | LIVE TRACKING
-          </span>
-          <p className="text-gray-400 text-sm">จำนวนบัตรที่จำหน่ายแบบเรียลไทม์</p>
-
-          <div className="text-7xl font-extrabold tracking-tight">
-            <span className="tabular-nums">{currentCount.toLocaleString()}</span>{' '}
-            <span className="text-2xl font-normal text-gray-400">/ 10,000 TICKETS</span>
+        <div className="max-w-5xl mx-auto w-full space-y-8 my-auto text-center pt-4">
+          
+          {/* FEBRUARY Tag */}
+          <div className="inline-block">
+            <span className="bg-purple-950/80 border border-purple-500/40 text-gray-300 text-[10px] sm:text-xs font-semibold px-4 py-1 rounded-full tracking-widest uppercase backdrop-blur-md">
+              FEBRUARY • KHAO YAI • ONE DAY ONLY
+            </span>
           </div>
 
-          <div className="max-w-xl mx-auto space-y-2">
-            <div className="h-4 w-full bg-slate-800 rounded-full overflow-hidden p-0.5 relative shadow-inner">
-              <div
-                className="h-full bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 rounded-full transition-all duration-1000 ease-out animate-pulse relative overflow-hidden"
-                style={{ width: `${progressWidth}%` }}
-              >
-                <div className="absolute inset-0 bg-white/20 -translate-x-full animate-[shimmer_2s_infinite]"></div>
-              </div>
-            </div>
-            <div className="flex justify-between text-xs text-gray-400">
-              <span>0</span>
-              <span>2,500</span>
-              <span>5,000</span>
-              <span>7,500</span>
-              <span>10,000</span>
-            </div>
+          {/* Main Title Section */}
+          <div className="space-y-1">
+            <h1 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight leading-none text-white uppercase font-sans">
+              BACK TO
+            </h1>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-light tracking-[0.25em] text-gray-200 uppercase pt-2">
+              CHILDHOOD FESTIVAL
+            </h2>
           </div>
 
-          <p className="text-sm text-gray-300">
-            เหลืออีก{' '}
-            <span className="text-yellow-400 font-bold tabular-nums inline-block min-w-[45px] text-center">
-              {(totalTickets - currentCount).toLocaleString()}
-            </span>{' '}
-            ใบ เพื่อปลดล็อกความมันส์ขั้นต่อไป!
+          {/* Slogan */}
+          <p className="text-gray-300 text-xs sm:text-sm font-light max-w-2xl mx-auto leading-relaxed pt-1">
+            ทิ้งความเป็นผู้ใหญ่ไว้หน้าประตู แล้วกลับมาวิ่ง เล่น ร้อง และหัวเราะให้ดังเหมือนเมื่อก่อน
           </p>
 
-          <a
-            href="#presentation"
-            className="bg-transparent border border-white/30 hover:border-white px-6 py-2 rounded-full text-sm inline-flex items-center space-x-2 transition"
-          >
-            <span>ดูรายละเอียดการปลดล็อก</span>
-            <span>↓</span>
-          </a>
-
-          <div className="bg-slate-900/80 backdrop-blur-sm border border-slate-700 p-4 rounded-xl max-w-md mx-auto flex justify-between items-center text-left">
-            <div>
-              <span className="text-xs text-gray-400 block">NEXT UNLOCK</span>
-              <span className="font-bold text-lg">7,500 ใบ</span>
-            </div>
-            <span className="text-sm text-yellow-400 font-semibold">: ศิลปินลับ + กิจกรรมพิเศษ</span>
+          {/* Key Stats Bar */}
+          <div className="flex justify-center items-center space-x-4 sm:space-x-8 text-[11px] sm:text-xs font-semibold text-gray-300 tracking-wider pt-1 uppercase">
+            <span>10,000 FRIENDS</span>
+            <span className="text-purple-500">|</span>
+            <span>3 STAGES</span>
+            <span className="text-purple-500">|</span>
+            <span>1 DAY TO REMEMBER</span>
           </div>
+
+          {/* Ticket Counter Box (อัปเดตสีเป็นโทนม่วง-ชมพูนีออน) */}
+          <div className="max-w-3xl mx-auto bg-slate-950/70 border border-purple-800/50 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl shadow-purple-950/50 space-y-6 mt-6">
+            
+            <div className="flex justify-between items-center text-[10px] sm:text-xs font-bold tracking-wider text-gray-400">
+              <span className="uppercase tracking-widest text-purple-200/80">THE CROWD IS GROWING</span>
+              <div className="flex items-center space-x-1.5 text-pink-400">
+                <span className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                <span className="uppercase tracking-wider">LIVE TICKET COUNTER</span>
+              </div>
+            </div>
+
+            {/* Giant Number Counter */}
+            <div className="flex justify-center items-baseline space-x-2 sm:space-x-4">
+              <span className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-400 to-fuchsia-200 tabular-nums drop-shadow-[0_0_25px_rgba(217,70,239,0.3)]">
+                {currentCount.toLocaleString()}
+              </span>
+              <div className="text-left">
+                <div className="text-xs sm:text-sm font-bold text-gray-300">/10,000</div>
+                <div className="text-[10px] text-purple-300 font-semibold tracking-wider uppercase">TICKETS SOLD</div>
+              </div>
+            </div>
+
+            {/* Neon Progress Bar */}
+            <div className="space-y-2">
+              <div className="h-3.5 w-full bg-slate-900/90 rounded-full overflow-hidden p-0.5 border border-purple-800/40 shadow-inner">
+                <div
+                  className="h-full bg-gradient-to-r from-purple-600 via-pink-500 to-rose-400 rounded-full transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(236,72,153,0.8)]"
+                  style={{ width: `${progressWidth}%` }}
+                ></div>
+              </div>
+              <div className="flex justify-between text-[10px] font-semibold text-gray-400 tracking-wider">
+                <span>0</span>
+                <span>5,000</span>
+                <span>10,000</span>
+              </div>
+            </div>
+
+            {/* Artist Unlock Box */}
+            <div className="bg-slate-900/90 border border-purple-700/40 rounded-2xl p-4 flex justify-between items-center text-left">
+              <div className="flex items-center space-x-3">
+                <span className="text-pink-400 text-lg">✦</span>
+                <div>
+                  <div className="text-[10px] text-purple-300 font-medium">NEXT ARTIST UNLOCK · 7,000 ใบ</div>
+                  <div className="text-xs sm:text-sm font-bold text-white">อีกไม่กี่คน ศิลปินลำดับถัดไปจะถูกเปิดเผย</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-sm sm:text-base font-bold text-pink-400 font-mono">158</span>
+                <span className="text-[10px] text-gray-400 ml-1">TO GO</span>
+              </div>
+            </div>
+
+            {/* Main Action Button */}
+            <div className="pt-2">
+              <a
+                href="#buy-ticket"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold px-10 py-4 rounded-xl text-base transition shadow-lg shadow-pink-600/30"
+              >
+                <span>จองที่ของคุณ</span>
+                <span>↗</span>
+              </a>
+            </div>
+
+          </div>
+
+          {/* Interactive Photo Upload Widget */}
+          <div className="max-w-md mx-auto pt-4">
+            <div className="bg-slate-900/80 border border-purple-900/50 p-4 rounded-2xl backdrop-blur-md space-y-3">
+              <div className="text-left text-xs text-gray-300 font-semibold flex items-center justify-between">
+                <span>📸 ลองแต่งการ์ดพรีวิวเข้างานของคุณ</span>
+                <span className="text-[10px] text-pink-400">#BackToChildhood</span>
+              </div>
+              <div className="relative aspect-video w-full rounded-xl bg-slate-950 border border-dashed border-purple-700/60 flex items-center justify-center overflow-hidden">
+                {heroPhoto ? (
+                  <div className="relative w-full h-full">
+                    <img src={heroPhoto} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={clearHeroPhoto}
+                      className="absolute top-2 right-2 bg-black/70 hover:bg-black text-white w-6 h-6 rounded-full text-xs flex items-center justify-center"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ) : (
+                  <label className="cursor-pointer text-center p-2 w-full h-full flex items-center justify-center">
+                    <input type="file" accept="image/*" onChange={handleHeroPhotoUpload} className="hidden" />
+                    <span className="text-xs text-purple-300 font-medium hover:underline">+ อัปโหลดรูปถ่ายของคุณที่นี่</span>
+                  </label>
+                )}
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -212,7 +355,7 @@ export default function CloudyFestival() {
         id="presentation"
         className="min-h-screen text-white p-6 pt-28 relative bg-cover bg-center flex flex-col justify-center"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80')`,
+          backgroundImage: `linear-gradient(to bottom, rgba(10, 5, 18, 0.85), rgba(10, 5, 18, 0.95)), url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1200&q=80')`,
         }}
       >
         <div className="max-w-4xl mx-auto w-full my-auto space-y-6">
@@ -227,6 +370,7 @@ export default function CloudyFestival() {
               src="https://www.youtube-nocookie.com/embed/L_LUpnjgPso"
               title="YouTube video player"
               frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
           </div>
@@ -235,11 +379,11 @@ export default function CloudyFestival() {
             <p className="text-sm text-gray-300">
               มาร่วมสร้างประสบการณ์ดนตรีที่มากกว่าคอนเสิร์ต
               <br />
-              ไปด้วยกันกับ Cloudy Festival
+              ไปด้วยกันกับ Back to Childhood Festival
             </p>
             <a
               href="#festival"
-              className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-bold text-sm flex items-center space-x-2"
+              className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-bold text-sm flex items-center space-x-2 transition"
             >
               <span>NEXT : THE FESTIVAL</span>
               <span>→</span>
@@ -257,12 +401,12 @@ export default function CloudyFestival() {
           </div>
 
           <div className="flex flex-wrap gap-2 text-xs font-semibold">
-            <button className="bg-lime-400 text-black px-4 py-2 rounded-md">STAGES</button>
-            <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md">ACTIVITIES</button>
-            <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md">FOOD & DRINK</button>
-            <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md">MARKET</button>
-            <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md">CAMPING</button>
-            <button className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md">ART & INSTALLATION</button>
+            <button type="button" className="bg-lime-400 text-black px-4 py-2 rounded-md">STAGES</button>
+            <button type="button" className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md transition">ACTIVITIES</button>
+            <button type="button" className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md transition">FOOD & DRINK</button>
+            <button type="button" className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md transition">MARKET</button>
+            <button type="button" className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md transition">CAMPING</button>
+            <button type="button" className="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded-md transition">ART & INSTALLATION</button>
           </div>
 
           <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl group">
@@ -275,7 +419,7 @@ export default function CloudyFestival() {
               <span className="text-yellow-400 text-xs font-bold tracking-widest uppercase mb-1">
                 Experience The Magic
               </span>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-wide">CLOUDY FESTIVAL 2026</h2>
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-wide">BACK TO CHILDHOOD 2026</h2>
               <p className="text-xs sm:text-sm text-gray-300 max-w-xl mt-2">
                 เตรียมพบกับเทศกาลดนตรีที่รวมที่สุดแห่งแสง สี เสียง และไลน์อัปศิลปินที่คุณรอคอย
               </p>
@@ -294,7 +438,7 @@ export default function CloudyFestival() {
                 </div>
                 <h3 className="text-lg font-bold text-purple-400">LINE-UP ARTISTS</h3>
                 <p className="text-xs text-gray-400 mt-2">
-                  พบกับไลน์อัปศิลปินชื่อดังกว่า 20 วงที่จะมาร่วมสร้างความมันส์ตลอด 2 วันเต็ม
+                  พบกับไลน์อัปศิลปินชื่อดังกว่า 20 วงที่จะมาร่วมสร้างความมันส์ตลอดวัน
                 </p>
               </div>
             </div>
@@ -379,7 +523,7 @@ export default function CloudyFestival() {
               </div>
 
               <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-3 mt-4">
-                <div className="text-xs font-bold text-pink-400 uppercase tracking-wider">CLOUDY FESTIVAL 2026</div>
+                <div className="text-xs font-bold text-pink-400 uppercase tracking-wider">BACK TO CHILDHOOD FESTIVAL</div>
                 <div className="flex justify-between items-center text-xs text-gray-400">
                   <span>ราคาต่อใบ</span>
                   <span>฿{ticketPrice.toLocaleString()}</span>
@@ -427,6 +571,8 @@ export default function CloudyFestival() {
                     onClick={() => {
                       setIsSuccess(false);
                       setSelectedFile(null);
+                      setFileName('');
+                      setFormData({ fullName: '', email: '', phone: '' });
                     }}
                     className="text-xs bg-slate-800 hover:bg-slate-700 text-gray-300 px-4 py-2 rounded-lg border border-slate-700 transition mt-2"
                   >
@@ -438,18 +584,27 @@ export default function CloudyFestival() {
                   <div className="space-y-2 text-xs">
                     <input
                       type="text"
+                      name="fullName"
+                      value={formData.fullName}
+                      onChange={handleInputChange}
                       placeholder="ชื่อ-นามสกุล"
                       required
                       className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
                     />
                     <input
                       type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
                       placeholder="อีเมล (สำหรับรับบัตร)"
                       required
                       className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
                     />
                     <input
                       type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
                       placeholder="เบอร์โทรศัพท์"
                       required
                       className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 focus:border-pink-500 focus:outline-none text-white placeholder-gray-500"
@@ -460,9 +615,9 @@ export default function CloudyFestival() {
                   <label className="block border-2 border-dashed border-slate-700 hover:border-pink-500 rounded-xl p-3.5 text-center cursor-pointer transition bg-slate-900/50 relative">
                     <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
                     
-                    {selectedFile ? (
+                    {fileName ? (
                       <div className="flex items-center justify-between text-xs text-pink-400 font-medium px-1">
-                        <span className="truncate max-w-[180px]">📄 {selectedFile}</span>
+                        <span className="truncate max-w-[180px]">📄 {fileName}</span>
                         <button
                           type="button"
                           onClick={handleRemoveFile}
