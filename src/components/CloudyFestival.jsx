@@ -293,28 +293,7 @@ export default function CloudyFestival() {
             </h2>
           </div>
 
-          {/* COUNTDOWN TIMER WIDGET */}
-          <div className="max-w-lg mx-auto bg-slate-900/80 border border-purple-800/60 rounded-2xl p-4 backdrop-blur-md">
-            <p className="text-[11px] font-bold text-pink-400 tracking-widest uppercase mb-2">COUNTDOWN TO SHOWTIME</p>
-            <div className="grid grid-cols-4 gap-2 text-center">
-              <div className="bg-slate-950 p-2 rounded-xl border border-purple-900/50">
-                <div className="text-2xl sm:text-3xl font-black text-white font-mono">{timeLeft.days}</div>
-                <div className="text-[9px] text-gray-400 uppercase font-semibold">DAYS</div>
-              </div>
-              <div className="bg-slate-950 p-2 rounded-xl border border-purple-900/50">
-                <div className="text-2xl sm:text-3xl font-black text-white font-mono">{timeLeft.hours}</div>
-                <div className="text-[9px] text-gray-400 uppercase font-semibold">HOURS</div>
-              </div>
-              <div className="bg-slate-950 p-2 rounded-xl border border-purple-900/50">
-                <div className="text-2xl sm:text-3xl font-black text-white font-mono">{timeLeft.minutes}</div>
-                <div className="text-[9px] text-gray-400 uppercase font-semibold">MINS</div>
-              </div>
-              <div className="bg-slate-950 p-2 rounded-xl border border-purple-900/50">
-                <div className="text-2xl sm:text-3xl font-black text-pink-400 font-mono animate-pulse">{timeLeft.seconds}</div>
-                <div className="text-[9px] text-gray-400 uppercase font-semibold">SECS</div>
-              </div>
-            </div>
-          </div>
+          
 
           <p className="text-gray-300 text-xs sm:text-sm font-light max-w-2xl mx-auto leading-relaxed pt-1">
             ทิ้งความเป็นผู้ใหญ่ไว้หน้าประตู แล้วกลับมาวิ่ง เล่น ร้อง และหัวเราะให้ดังเหมือนเมื่อก่อน
