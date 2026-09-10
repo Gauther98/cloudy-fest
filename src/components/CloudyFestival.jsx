@@ -320,45 +320,75 @@ export default function CloudyFestival() {
             ทิ้งความเป็นผู้ใหญ่ไว้หน้าประตู แล้วกลับมาวิ่ง เล่น ร้อง และหัวเราะให้ดังเหมือนเมื่อก่อน
           </p>
 
-          {/* Ticket Counter Box */}
-          <div className="max-w-3xl mx-auto bg-slate-950/70 border border-purple-800/50 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl shadow-purple-950/50 space-y-6 mt-6">
-            <div className="flex justify-between items-center text-[10px] sm:text-xs font-bold tracking-wider text-gray-400">
-              <span className="uppercase tracking-widest text-purple-200/80">THE CROWD IS GROWING</span>
-              <div className="flex items-center space-x-1.5 text-pink-400">
-                <span className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
-                <span className="uppercase tracking-wider">LIVE TICKET COUNTER</span>
-              </div>
-            </div>
+          {/* Ticket Counter Box with Glow & Shimmer Effects */}
+<div className="max-w-3xl mx-auto bg-slate-950/70 border border-purple-800/50 rounded-3xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl shadow-purple-950/50 space-y-6 mt-6 relative overflow-hidden">
+  
+  {/* CSS Animation Keyframes สำหรับไฟวิ่งและแสงกระพริบ */}
+  <style>{`
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    @keyframes numberGlow {
+      0%, 100% { 
+        text-shadow: 0 0 20px rgba(217,70,239,0.4), 0 0 40px rgba(236,72,153,0.2);
+        opacity: 1;
+      }
+      50% { 
+        text-shadow: 0 0 30px rgba(217,70,239,0.8), 0 0 60px rgba(236,72,153,0.5);
+        opacity: 0.92;
+      }
+    }
+    .animate-shimmer {
+      animation: shimmer 2.5s infinite linear;
+    }
+    .animate-number-glow {
+      animation: numberGlow 2s infinite ease-in-out;
+    }
+  `}</style>
 
-            <div className="flex justify-center items-baseline space-x-2 sm:space-x-4">
-              <span className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-400 to-fuchsia-200 tabular-nums drop-shadow-[0_0_25px_rgba(217,70,239,0.3)]">
-                {currentCount.toLocaleString()}
-              </span>
-              <div className="text-left">
-                <div className="text-xs sm:text-sm font-bold text-gray-300">/10,000</div>
-                <div className="text-[10px] text-purple-300 font-semibold tracking-wider uppercase">TICKETS SOLD</div>
-              </div>
-            </div>
+  <div className="flex justify-between items-center text-[10px] sm:text-xs font-bold tracking-wider text-gray-400">
+    <span className="uppercase tracking-widest text-purple-200/85">THE CROWD IS GROWING</span>
+    <div className="flex items-center space-x-1.5 text-pink-400">
+      <span className="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span>
+      <span className="uppercase tracking-wider">LIVE TICKET COUNTER</span>
+    </div>
+  </div>
 
-            <div className="space-y-2">
-              <div className="h-3.5 w-full bg-slate-900/90 rounded-full overflow-hidden p-0.5 border border-purple-800/40 shadow-inner">
-                <div
-                  className="h-full bg-gradient-to-r from-purple-600 via-pink-500 to-rose-400 rounded-full transition-all duration-1000 ease-out shadow-[0_0_12px_rgba(236,72,153,0.8)]"
-                  style={{ width: `${progressWidth}%` }}
-                ></div>
-              </div>
-            </div>
+  {/* ตัวเลขยอดขายพร้อมแสงกระพริบ */}
+  <div className="flex justify-center items-baseline space-x-2 sm:space-x-4">
+    <span className="text-7xl sm:text-8xl md:text-9xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-400 to-fuchsia-200 tabular-nums animate-number-glow">
+      {currentCount.toLocaleString()}
+    </span>
+    <div className="text-left">
+      <div className="text-xs sm:text-sm font-bold text-gray-300">/10,000</div>
+      <div className="text-[10px] text-purple-300 font-semibold tracking-wider uppercase">TICKETS SOLD</div>
+    </div>
+  </div>
 
-            <div className="pt-2">
-              <a
-                href="#buy-ticket"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold px-10 py-4 rounded-xl text-base transition shadow-lg shadow-pink-600/30"
-              >
-                <span>จองที่ของคุณ</span>
-                <span>↗</span>
-              </a>
-            </div>
-          </div>
+  {/* Progress Bar พร้อมเอฟเฟกต์ไฟวิ่ง (Shimmer) */}
+  <div className="space-y-2">
+    <div className="h-4 w-full bg-slate-900/90 rounded-full overflow-hidden p-0.5 border border-purple-800/40 shadow-inner relative">
+      <div
+        className="h-full bg-gradient-to-r from-purple-600 via-pink-500 to-rose-400 rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(236,72,153,0.9)] relative overflow-hidden"
+        style={{ width: `${progressWidth}%` }}
+      >
+        {/* แถบแสงไฟวิ่งทับด้านบน */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer"></div>
+      </div>
+    </div>
+  </div>
+
+  <div className="pt-2 text-center">
+    <a
+      href="#buy-ticket"
+      className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold px-10 py-4 rounded-xl text-base transition shadow-lg shadow-pink-600/40"
+    >
+      <span>จองที่ของคุณ</span>
+      <span>↗</span>
+    </a>
+  </div>
+</div>
         </div>
       </section>
 
