@@ -501,91 +501,113 @@ export default function CloudyFestival() {
           </div>
 
           {/* Ticket Type Cards Layout */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* Card 1: General Admission */}
-            <div 
-              onClick={() => setSelectedTicketType('regular')}
-              className={`relative bg-[#160c29] p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-8 ${
-                selectedTicketType === 'regular'
-                  ? 'border-purple-500 ring-2 ring-purple-500/50 bg-[#1e1039]'
-                  : 'border-purple-900/40 hover:border-purple-600/60'
-              }`}
-            >
-              <div className="space-y-4">
-                <div className="text-[10px] tracking-widest text-purple-300/80 font-bold uppercase">
-                  {ticketTypes.regular.tag}
-                </div>
-                <h3 className="text-3xl font-black text-white">{ticketTypes.regular.title}</h3>
-                <p className="text-xs text-purple-200/70 leading-relaxed">{ticketTypes.regular.desc}</p>
-              </div>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  
+  {/* Card 1: General Admission */}
+  <div 
+    onClick={() => setSelectedTicketType('regular')}
+    className={`relative bg-[#11081f] p-8 rounded-3xl border transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-8 shadow-xl ${
+      selectedTicketType === 'regular'
+        ? 'border-teal-400 ring-2 ring-teal-500/30 bg-[#150a26]'
+        : 'border-slate-800 hover:border-slate-700'
+    }`}
+  >
+    <div className="space-y-6">
+      <div className="inline-block bg-teal-950/80 border border-teal-500/40 text-teal-400 text-[10px] tracking-widest font-bold px-3.5 py-1 rounded-full uppercase">
+        {ticketTypes.regular.tag}
+      </div>
 
-              <div className="space-y-6">
-                <div className="flex items-baseline space-x-2">
-                  <span className="text-4xl font-black text-white font-sans">
-                    {ticketTypes.regular.price.toLocaleString()}
-                  </span>
-                  <span className="text-xs text-purple-200/70">{ticketTypes.regular.unitLabel}</span>
-                </div>
+      <div className="space-y-2">
+        <h3 className="text-3xl font-black tracking-tight text-white">{ticketTypes.regular.title}</h3>
+        <div className="flex items-baseline space-x-1 pt-2">
+          <span className="text-4xl font-black text-white font-sans">
+            ฿{ticketTypes.regular.price.toLocaleString()}
+          </span>
+          <span className="text-xs text-gray-400 font-medium">{ticketTypes.regular.unitLabel}</span>
+        </div>
+      </div>
 
-                <button
-                  type="button"
-                  className={`w-full py-3 rounded-lg text-xs font-bold transition border ${
-                    selectedTicketType === 'regular'
-                      ? 'bg-purple-600 border-purple-500 text-white'
-                      : 'bg-transparent border-purple-800/60 text-purple-300 hover:bg-purple-900/40'
-                  }`}
-                >
-                  {selectedTicketType === 'regular' ? 'เลือกบัตรนี้แล้ว' : 'เลือกบัตรนี้'}
-                </button>
-              </div>
-            </div>
+      <div className="space-y-3 pt-2 text-xs text-gray-300">
+        <div className="flex items-start space-x-2.5">
+          <span className="text-teal-400 font-bold">✓</span>
+          <span>สิทธิ์เข้างาน 1 คน</span>
+        </div>
+        <div className="flex items-start space-x-2.5">
+          <span className="text-teal-400 font-bold">✓</span>
+          <span>เข้าถึงทั้ง 3 เวทีและทุกกิจกรรม</span>
+        </div>
+      </div>
+    </div>
 
-            {/* Card 2: VIP Camper */}
-            <div 
-              onClick={() => setSelectedTicketType('vip')}
-              className={`relative bg-[#1a0c33] p-6 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-8 ${
-                selectedTicketType === 'vip'
-                  ? 'border-purple-500 ring-2 ring-purple-500/50 bg-[#220d47]'
-                  : 'border-purple-900/40 hover:border-purple-600/60'
-              }`}
-            >
-              {selectedTicketType === 'vip' && (
-                <div className="absolute top-4 right-4 bg-purple-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold">
-                  ✓
-                </div>
-              )}
+    <button
+      type="button"
+      className={`w-full py-3.5 rounded-xl text-xs font-bold transition border ${
+        selectedTicketType === 'regular'
+          ? 'bg-slate-800 border-teal-500/50 text-white shadow-lg'
+          : 'bg-slate-900 border-slate-800 text-gray-300 hover:bg-slate-800'
+      }`}
+    >
+      {selectedTicketType === 'regular' ? 'เลือกบัตรนี้แล้ว' : 'เลือกซื้อ ธรรมดา'}
+    </button>
+  </div>
 
-              <div className="space-y-4">
-                <div className="text-[10px] tracking-widest text-purple-300/80 font-bold uppercase">
-                  {ticketTypes.vip.tag}
-                </div>
-                <h3 className="text-3xl font-black text-white">{ticketTypes.vip.title}</h3>
-                <p className="text-xs text-purple-200/70 leading-relaxed">{ticketTypes.vip.desc}</p>
-              </div>
+  {/* Card 2: VIP Camper */}
+  <div 
+    onClick={() => setSelectedTicketType('vip')}
+    className={`relative bg-[#150a26] p-8 rounded-3xl border transition-all duration-300 cursor-pointer flex flex-col justify-between space-y-8 shadow-xl ${
+      selectedTicketType === 'vip'
+        ? 'border-purple-500 ring-2 ring-purple-500/40 bg-[#1a0c33]'
+        : 'border-slate-800 hover:border-slate-700'
+    }`}
+  >
+    <div className="absolute top-6 right-6 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[9px] font-black tracking-widest px-3 py-1 rounded-full uppercase shadow-md">
+      RECOMMENDED
+    </div>
 
-              <div className="space-y-6">
-                <div className="flex items-baseline space-x-2">
-                  <span className="text-4xl font-black text-white font-sans">
-                    {ticketTypes.vip.price.toLocaleString()}
-                  </span>
-                  <span className="text-xs text-purple-200/70">{ticketTypes.vip.unitLabel}</span>
-                </div>
+    <div className="space-y-6">
+      <div className="inline-block bg-purple-950/80 border border-purple-500/40 text-purple-300 text-[10px] tracking-widest font-bold px-3.5 py-1 rounded-full uppercase">
+        {ticketTypes.vip.tag}
+      </div>
 
-                <button
-                  type="button"
-                  className={`w-full py-3 rounded-lg text-xs font-bold transition border ${
-                    selectedTicketType === 'vip'
-                      ? 'bg-purple-600 border-purple-500 text-white shadow-lg shadow-purple-600/30'
-                      : 'bg-transparent border-purple-800/60 text-purple-300 hover:bg-purple-900/40'
-                  }`}
-                >
-                  {selectedTicketType === 'vip' ? 'เลือกบัตรนี้แล้ว' : 'เลือกบัตรนี้'}
-                </button>
-              </div>
-            </div>
+      <div className="space-y-2">
+        <h3 className="text-3xl font-black tracking-tight text-white">{ticketTypes.vip.title}</h3>
+        <div className="flex items-baseline space-x-1 pt-2">
+          <span className="text-4xl font-black text-purple-400 font-sans">
+            ฿{ticketTypes.vip.price.toLocaleString()}
+          </span>
+          <span className="text-xs text-gray-400 font-medium">{ticketTypes.vip.unitLabel}</span>
+        </div>
+      </div>
 
-          </div>
+      <div className="space-y-3 pt-2 text-xs text-gray-300">
+        <div className="flex items-start space-x-2.5">
+          <span className="text-purple-400 font-bold">✦</span>
+          <span>บัตร 4 คน • รถบ้านส่วนตัว</span>
+        </div>
+        <div className="flex items-start space-x-2.5">
+          <span className="text-purple-400 font-bold">✦</span>
+          <span>ช่องเข้างานพิเศษ • พื้นที่รับรอง</span>
+        </div>
+        <div className="flex items-start space-x-2.5">
+          <span className="text-purple-400 font-bold">✦</span>
+          <span>สิทธิ์พิเศษเฉพาะ VIP ตลอดงาน</span>
+        </div>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      className={`w-full py-3.5 rounded-xl text-xs font-bold transition shadow-lg ${
+        selectedTicketType === 'vip'
+          ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-purple-600/30'
+          : 'bg-slate-900 border border-slate-800 text-gray-300 hover:bg-slate-800'
+      }`}
+    >
+      {selectedTicketType === 'vip' ? 'เลือกบัตรนี้แล้ว' : 'เลือกซื้อ VIP PASS'}
+    </button>
+  </div>
+
+</div>
 
           {/* ขั้นตอนการสั่งซื้อและชำระเงิน */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-slate-900/50 backdrop-blur-md p-6 rounded-2xl border border-slate-800 mt-6">
