@@ -401,11 +401,44 @@ export default function CloudyFestival() {
         }}
       >
         <div className="max-w-4xl mx-auto w-full my-auto space-y-6">
-          <div>
-            <span className="bg-indigo-600 text-xs px-3 py-1 rounded-sm font-bold">02 PRESENTATION</span>
-            <p className="text-xs text-gray-400 mt-1">วิดีโอพรีเซนเทชันงาน</p>
+          <div className="flex justify-between items-end">
+            <div>
+              <span className="bg-indigo-600 text-xs px-3 py-1 rounded-sm font-bold">02 PRESENTATION</span>
+              <p className="text-xs text-gray-400 mt-1">วิดีโอพรีเซนเทชันงาน</p>
+            </div>
+            <a
+              href="#festival"
+              className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-bold text-sm inline-flex items-center space-x-2 transition"
+            >
+              <span>NEXT : THE LINE-UP</span>
+              <span>→</span>
+            </a>
           </div>
 
+          {/* ย้ายกล่อง COUNTDOWN TIMER มาไว้ตรงนี้ */}
+          <div className="bg-slate-950/80 border border-purple-800/60 rounded-2xl p-4 backdrop-blur-md text-center">
+            <p className="text-[11px] font-bold text-pink-400 tracking-widest uppercase mb-2">COUNTDOWN TO SHOWTIME</p>
+            <div className="grid grid-cols-4 gap-2">
+              <div className="bg-slate-900 p-2 rounded-xl border border-purple-900/50">
+                <div className="text-xl sm:text-2xl font-black text-white font-mono">{timeLeft.days}</div>
+                <div className="text-[9px] text-gray-400 uppercase font-semibold">DAYS</div>
+              </div>
+              <div className="bg-slate-900 p-2 rounded-xl border border-purple-900/50">
+                <div className="text-xl sm:text-2xl font-black text-white font-mono">{timeLeft.hours}</div>
+                <div className="text-[9px] text-gray-400 uppercase font-semibold">HOURS</div>
+              </div>
+              <div className="bg-slate-900 p-2 rounded-xl border border-purple-900/50">
+                <div className="text-xl sm:text-2xl font-black text-white font-mono">{timeLeft.minutes}</div>
+                <div className="text-[9px] text-gray-400 uppercase font-semibold">MINS</div>
+              </div>
+              <div className="bg-slate-900 p-2 rounded-xl border border-purple-900/50">
+                <div className="text-xl sm:text-2xl font-black text-pink-400 font-mono animate-pulse">{timeLeft.seconds}</div>
+                <div className="text-[9px] text-gray-400 uppercase font-semibold">SECS</div>
+              </div>
+            </div>
+          </div>
+
+          {/* กล่องวิดีโอ Presentation */}
           <div className="relative aspect-video bg-black rounded-2xl overflow-hidden border border-slate-700 shadow-2xl">
             <iframe
               className="w-full h-full"
@@ -417,23 +450,11 @@ export default function CloudyFestival() {
             ></iframe>
           </div>
 
-          <div className="flex justify-between items-end">
-            <p className="text-sm text-gray-300">
-              มาร่วมสร้างประสบการณ์ดนตรีที่มากกว่าคอนเสิร์ต
-              <br />
-              ไปด้วยกันกับ Back to Childhood Festival
-            </p>
-            <a
-              href="#festival"
-              className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-lg font-bold text-sm flex items-center space-x-2 transition"
-            >
-              <span>NEXT : THE LINE-UP</span>
-              <span>→</span>
-            </a>
-          </div>
+          <p className="text-sm text-gray-300 text-center">
+            มาร่วมสร้างประสบการณ์ดนตรีที่มากกว่าคอนเสิร์ต ไปด้วยกันกับ Back to Childhood Festival
+          </p>
         </div>
       </section>
-
       {/* SECTION 3: HEADLINERS & FESTIVAL */}
       <section id="festival" className="min-h-screen bg-slate-950 text-white p-6 pt-24 flex flex-col justify-center">
         <div className="max-w-5xl mx-auto space-y-8 w-full">
